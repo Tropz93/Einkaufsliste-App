@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Einkaufsliste</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: #e9ecef;
+            color: #333;
+            line-height: 1.6;
+            background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+                              linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
+                              linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+                              linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .list-container {
+            width: 90%;
+            max-width: 500px; /* Reduced max-width */
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #28a745;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 img {
+            margin-right: 10px; /* Abstand zwischen Icon und Text */
+            height: 24px; /* Icon-Größe anpassen */
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        button {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        .add-item-form {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-item-form input[type="text"] {
+            flex-grow: 1;
+            padding: 8px; /* Further reduced padding */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px; /* Further reduced font-size */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .add-item-form input[type="number"] {
+            width: 50px; /* Further reduced width */
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .add-item-form button {
+            padding: 8px 12px; /* Further reduced padding */
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-item-form button:hover {
+            background-color: #218838;
+        }
+
+        #shopping-list {
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #343a40;
+            color: white;
+            border-top: 1px solid #28a745;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Media query for smartphone-friendly layout */
+        @media (max-width: 600px) {
+            .list-container {
+                width: 95%;
+                margin: 15px auto;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .add-item-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .add-item-form input[type="text"],
+            .add-item-form input[type="number"],
+            .add-item-form button {
+                width: 100%;
+                padding: 10px;
+                font-size: 16px;
+            }
+
+            .item {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            button {
+                padding: 8px 12px;
+            }
+
+            footer {
+                padding: 15px;
+                font-size: 12px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="list-container">
+        <h1>
+            <img src="https://cdn-icons-png.flaticon.com/512/2838/2838895.png" alt="Einkaufswagen Icon">
+            Meine Einkaufsliste
+        </h1>
+        <div id="shopping-list">
+            <!-- Hier werden die Artikel eingefügt -->
+        </div>
+        <div class="add-item-form">
+            <input type="text" id="new-item-name" placeholder="Artikel hinzufügen">
+            <input type="number" id="new-item-quantity" value="1" min="1">
+            <button onclick="addItem()">Hinzufügen</button>
+        </div>
+    </div>
+
+    <footer>
+        Copyright by Tropz | 2025!
+    </footer>
+
+    <script>
+        function addItem() {
+            const itemName = document.getElementById('new-item-name').value;
+            const itemQuantity = document.getElementById('new-item-quantity').value;
+            if (itemName.trim() !== '') {
+                const shoppingList = document.getElementById('shopping-list');
+                const newItem = document.createElement('div');
+                newItem.classList.add('item');
+                newItem.innerHTML = `
+                    <span>${itemQuantity} x ${itemName}</span>
+                    <div>
+                        <button onclick="removeItem(this)">Entfernen</button>
+                    </div>
+                `;
+                shoppingList.appendChild(newItem);
+                document.getElementById('new-item-name').value = '';
+            }
+        }
+
+        function removeItem(button) {
+            const item = button.parentNode.parentNode;
+            item.parentNode.removeChild(item);
+        }
+    </script>
+</body>
+</html>
